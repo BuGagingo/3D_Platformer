@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,21 +5,23 @@ using UnityEngine;
 public class Teleport : MonoBehaviour
 {
     public Transform teleportPoint;
-    [Header("Время телепорта")] public int teleportTime = 3;
+    [Header("Время для телепортации")]
+    public float timeToTeleport = 2.5f;
+
     private void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(DoTeleport(other.transform));
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        StopAllCoroutines();
+        StartCoroutine(Telepotation(other));
     }
 
-    IEnumerator DoTeleport(Transform other)
+    private void OnTriggerExit(Collider other)
     {
-        yield return new WaitForSeconds(teleportTime);
+         StopAllCoroutines();
+    }
+    IEnumerator Telepotation(Collider other)
+    {
+        yield return new WaitForSeconds(timeToTeleport);
         other.transform.position = teleportPoint.position;
     }
-    
-    
+
+
 }

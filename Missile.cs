@@ -1,24 +1,33 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
+ 
 public class Missile : MonoBehaviour
 {
+    //Скорость полёта огненного шара
     public float speed;
-    public int damage;
-    private void Update()
+ 
+    void Update()
     {
-        transform.position += transform.forward * (speed * Time.deltaTime);
-    }
+       //Клон огненного шара уничтожается через 3 секунды
+        Destroy(gameObject, 3);
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            other.gameObject.GetComponent<Enemy>().TakeDamage(damage);
-        }
-        Destroy(gameObject);
+          //Каждый кадр позиция шара обновляется на произведение вектора движения вперёд (0,0,1),
+        //скорости движения шара и значение разницы в секундах между последним и текущим кадрами
+
+        transform.position += transform.forward * speed * Time.deltaTime;
     }
+ 
+    void OnTriggerEnter(Collider other) 
+    {
+ 
+        //Враг уничтожается
+        Enemy enemy = other.GetComponent<Enemy>();
+        Destroy(enemy.gameObject);
+ 
+        //Снаряд уничтожается
+        Destroy(gameObject);
+ 
+    }
+ 
 }
